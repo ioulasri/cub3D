@@ -6,7 +6,7 @@
 /*   By: imoulasr <imoulasr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 11:24:34 by imoulasr          #+#    #+#             */
-/*   Updated: 2025/02/24 16:26:44 by imoulasr         ###   ########.fr       */
+/*   Updated: 2025/02/25 16:08:43 by imoulasr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 
 # define MAP_LIMIT 2064
 # define INITIAL_CAPACITY 100
+# define CELL_SIZE 20
+# define ESC_KEY 65307
 
 /* 1- parsing */
 

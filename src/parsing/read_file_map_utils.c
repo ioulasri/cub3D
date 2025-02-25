@@ -6,7 +6,7 @@
 /*   By: imoulasr <imoulasr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 14:02:22 by imoulasr          #+#    #+#             */
-/*   Updated: 2025/02/25 09:54:41 by imoulasr         ###   ########.fr       */
+/*   Updated: 2025/02/25 12:44:42 by imoulasr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int open_file(const char *path)
     }
     fd = open(path, O_RDONLY);
     if (fd == -1)
-        perror("Error: Failed to open map file");
+        print_error("Error: Failed to open map file");
     return fd;
 }
 
@@ -48,7 +48,7 @@ char **allocate_map_array(int capacity)
     
     arr = malloc(sizeof(char *) * capacity);
     if (!arr)
-        perror("Error: Failed to allocate memory for map array");
+        print_error("Error: Failed to allocate memory for map array");
     return arr;
 }
 
@@ -61,7 +61,7 @@ char **resize_map_array(char **arr, int *capacity, int size)
     new_arr = malloc(sizeof(char *) * (*capacity));
     if (!new_arr)
     {
-        perror("Error: Failed to allocate memory for resized map array");
+        print_error("Error: Failed to allocate memory for resized map array");
         i = 0;
         while (i < size)
         {

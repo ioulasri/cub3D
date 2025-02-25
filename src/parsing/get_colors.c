@@ -6,7 +6,7 @@
 /*   By: imoulasr <imoulasr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 17:55:59 by imoulasr          #+#    #+#             */
-/*   Updated: 2025/02/25 10:40:02 by imoulasr         ###   ########.fr       */
+/*   Updated: 2025/02/25 11:40:08 by imoulasr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,29 +61,32 @@ int get_flce_colors(t_map_file *map_file, t_colors *colors)
 {
     char *floor_str;
     char *ceil_str;
+    int  error = 0;
 
     floor_str = get_key_value(map_file->arr, "F");
     if (!floor_str)
-        exit_with_error_cleanup("Missing F color", map_file, NULL);
-
+    {
+        print_error("Missing F color");
+        return 1;
+    }
     ceil_str = get_key_value(map_file->arr, "C");
     if (!ceil_str)
     {
         free(floor_str);
-        exit_with_error_cleanup("Missing C color", map_file, NULL);
+        print_error("Missing C color");
+        return 1;
     }
     if (parse_color_string(floor_str, &colors->floor_color) == -1)
     {
-        free(floor_str);
-        free(ceil_str);
-        exit_with_error_cleanup("Invalid F color format", map_file, NULL);
+        error = 1;
+        print_error("Invalid F color format");
     }
     if (parse_color_string(ceil_str, &colors->ceiling_color) == -1)
     {
-        free(floor_str);
-        free(ceil_str);
-        exit_with_error_cleanup("Invalid C color format", map_file, NULL);
+        error = 1;
+        print_error("Invalid C color format");
     }
-    free(floor_str);
     free(ceil_str);
+    free(floor_str);
+    return error;
 }

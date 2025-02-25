@@ -6,7 +6,7 @@
 #    By: imoulasr <imoulasr@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/24 12:08:46 by imoulasr          #+#    #+#              #
-#    Updated: 2025/02/25 10:15:41 by imoulasr         ###   ########.fr        #
+#    Updated: 2025/02/25 16:12:05 by imoulasr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 NAME = cub3D
 
 CC = cc
-CFLAGS = -Werror -Wextra -Wall -g3
+CFLAGS = -Werror -Wextra -Wall -fsanitize=address -g3
 
 MLX_PATH = minilibx-linux/
 MLX_NAME = libmlx.a
@@ -39,9 +39,9 @@ SRC = main.c \
 	  parsing/get_map.c \
 	  parsing/get_textures.c \
 	  parsing/valid_map_file.c \
+	  parsing/map.c \
 	  parsing/get_colors.c \
 	  free/free_config.c \
-	  free/free_map_grid.c \
 	  free/free_file_map.c \
 	  free/others.c \
 	  utils/remove_nl.c \

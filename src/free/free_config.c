@@ -6,11 +6,31 @@
 /*   By: imoulasr <imoulasr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 19:59:06 by imoulasr          #+#    #+#             */
-/*   Updated: 2025/02/25 10:36:51 by imoulasr         ###   ########.fr       */
+/*   Updated: 2025/02/25 14:05:40 by imoulasr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "cub3d.h"
+
+void	free_map(t_map *map)
+{
+	int	i;
+
+	if (!map)
+		return ;
+	if (map->grid)
+	{
+		i = 0;
+		while (map->grid[i])
+		{
+			free(map->grid[i]);
+			i++;
+		}
+		free(map->grid);
+	}
+	free(map);
+}
+
 
 void free_config(t_config *config)
 {
@@ -26,7 +46,7 @@ void free_config(t_config *config)
     }
 
     free(config->colors);
-    free(config->map);
+    free_map(config->map);
     free(config);
     exit(EXIT_FAILURE);
 }

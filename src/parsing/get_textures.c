@@ -6,7 +6,7 @@
 /*   By: imoulasr <imoulasr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 17:56:53 by imoulasr          #+#    #+#             */
-/*   Updated: 2025/02/25 09:38:57 by imoulasr         ###   ########.fr       */
+/*   Updated: 2025/02/25 12:41:49 by imoulasr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,25 @@ void print_textures(t_textures *textures)
     printf("  East Texture: %s\n", textures->ea_texture ? textures->ea_texture : "Not set");
 }
 
+int check_texture_path(const char *path)
+{
+    int len;
+
+    if (!path)
+        return (1);
+    len = ft_strlen(path);
+    if (len < 4)
+        return 1;
+    if (ft_strcmp(path + len - 4, ".xpm") != 0)
+        return 1;
+    return 0;
+}
+
 static bool texture_exists(const char *path)
 {
     int fd = open(path, O_RDONLY);
-    printf("path = %s\n", path);
-    printf("fd = %d\n", fd);
+    if (check_texture_path(path))
+        return false;
     if (fd == -1)
         return false;
     close(fd);
@@ -81,8 +95,8 @@ int    get_textures(t_map_file *map_file, t_textures *textures)
     textures->so_texture = get_key_value(map_file->arr, "SO");
     textures->we_texture = get_key_value(map_file->arr, "WE");
     textures->ea_texture = get_key_value(map_file->arr, "EA");
-    // if (!check_textures_paths(textures))
-    //     return (0);
+    if (!check_textures_paths(textures))
+        return (0);
     return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: imoulasr <imoulasr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 11:23:20 by imoulasr          #+#    #+#             */
-/*   Updated: 2025/02/25 10:39:53 by imoulasr         ###   ########.fr       */
+/*   Updated: 2025/02/25 16:18:01 by imoulasr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void exit_with_error_cleanup(const char *message, t_map_file *file, t_config *config)
 {
+    printf("Exit with error leaving");
     if (file)
         free_map_file(file);
     if (config)
@@ -75,6 +76,51 @@ void print_map(const t_map *map)
     }
 }
 
+void	find_player_in_map(t_map *map)
+{
+	int	x;
+	int	y;
+	int	found;
+
+	found = 0;
+	y = 0;
+	while (y < map->height)
+	{
+		x = 0;
+		while (map->grid[y][x])
+		{
+			if (map->grid[y][x] == 'N' || map->grid[y][x] == 'S' ||
+				map->grid[y][x] == 'E' || map->grid[y][x] == 'W')
+			{
+				map->start_x = x;
+				map->start_y = y;
+				map->start_dir = map->grid[y][x];
+				found++;
+			}
+			x++;
+		}
+		y++;
+	}
+	if (found != 1)
+		print_error("Map must contain exactly one player start");
+}
+
+void	setup_player(t_config *config)
+{
+	t_player	*player;
+
+	find_player_in_map(config->map);
+	player = malloc(sizeof(t_player));
+	if (!player)
+		exit_with_error_cleanup("Error: Failed to allocate player", config->file, config);
+	player->x = config->map->start_x * CELL_SIZE + (CELL_SIZE / 2);
+	player->y = config->map->start_y * CELL_SIZE + (CELL_SIZE / 2);
+	player->angle = 0.0;
+	config->player = player;
+}
+
+
+
 t_config    *game_config(t_map_file *map_file)
 {
     t_config *config = malloc(sizeof(t_config));
@@ -82,12 +128,13 @@ t_config    *game_config(t_map_file *map_file)
         exit_with_error("Error: Failed to allocate memory for config");
     init_config(config);
     if (!get_textures(map_file, config->textures) || !config->textures)
-        free_config(config);
+        exit_with_error_cleanup("", map_file, config);
     print_textures(config->textures);
-    if (!get_flce_colors(map_file, config->colors))
-        free_config(config);
+    if (get_flce_colors(map_file, config->colors))
+        exit_with_error_cleanup("", map_file, config);
     print_colors(config->colors);
-    get_map(map_file, config->map);
-    print_map(config->map);
+    if (get_map(map_file, config->map))
+        exit_with_error_cleanup("", map_file, config);
+    setup_player(config);
     return config;
 }

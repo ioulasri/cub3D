@@ -6,7 +6,7 @@
 /*   By: imoulasr <imoulasr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 13:05:31 by imoulasr          #+#    #+#             */
-/*   Updated: 2025/02/25 10:19:02 by imoulasr         ###   ########.fr       */
+/*   Updated: 2025/02/25 12:44:42 by imoulasr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void    empty_map(int fd, t_map_file *file)
 {
-    perror("Error: Failed to read map file");
+    print_error("Error: Empty map");
     close(fd);
     free_map_file(file);
     exit(EXIT_FAILURE);

@@ -6,7 +6,7 @@
 /*   By: imoulasr <imoulasr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 17:44:33 by imoulasr          #+#    #+#             */
-/*   Updated: 2025/02/24 19:54:39 by imoulasr         ###   ########.fr       */
+/*   Updated: 2025/02/25 14:34:23 by imoulasr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,31 +94,38 @@ static void compute_map_width(t_map *map)
     map->width = max_len;
 }
 
-void get_map(t_map_file *file, t_map *map)
+int	get_map(t_map_file *file, t_map *map)
 {
-    int i = 0;
-    int map_lines;
+	int	i;
+	int	map_lines;
+	int	j;
 
-    // 1) find the first map line
-    while (file->arr[i] && !is_map_line(file->arr[i]))
-        i++;
-
-    // If we reached the end of the array, there's no valid map
-    if (!file->arr[i])
-        exit_with_error("No valid map lines found");
-
-    printf("first line of the map: %s\n", file->arr[i]);
-
-    // 2) count how many consecutive lines form the map
-    map_lines = count_map_lines(file->arr, i);
-    if (map_lines == 0)
-        exit_with_error("No valid map lines found");
-
-    // 3) copy them into map->grid
-    copy_map_lines(file, map, i, map_lines);
-    compute_map_width(map);
-
-    // (Optional) parse out player start position or check map validity:
-    // find_player(map);
-    // validate_walls(map);
+	i = 0;
+	while (file->arr[i] && !is_map_line(file->arr[i]))
+		i++;
+	if (!file->arr[i])
+	{
+		print_error("Missing Map");
+		return (1);
+	}
+	printf("first line of the map: %s\n", file->arr[i]);
+	map_lines = count_map_lines(file->arr, i);
+	if (map_lines == 0)
+	{
+		print_error("Missing Map");
+		return (1);
+	}
+	copy_map_lines(file, map, i, map_lines);
+	compute_map_width(map);
+	j = i + map_lines;
+	while (file->arr[j])
+	{
+		if (!is_empty_line(file->arr[j]))
+		{
+			print_error("Extra content after map");
+			return (1);
+		}
+		j++;
+	}
+	return (0);
 }
