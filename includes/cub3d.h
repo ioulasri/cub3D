@@ -6,7 +6,7 @@
 /*   By: imoulasr <imoulasr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 11:24:34 by imoulasr          #+#    #+#             */
-/*   Updated: 2025/02/26 15:16:58 by imoulasr         ###   ########.fr       */
+/*   Updated: 2025/02/26 16:10:43 by imoulasr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define CELL_SIZE 20
 # define ESCKEY 65307
 # define FOLLOW_THRESHOLD 100
-# define ENEMY_CHASE_SPEED 0.003
+# define ENEMY_CHASE_SPEED 0.005
 # define ENEMY_DAMAGE 1
 # define DAMAGE_THRESHOLD 15
 # define PLAYER_HEALTH 200000.0
