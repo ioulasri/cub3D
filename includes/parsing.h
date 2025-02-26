@@ -6,7 +6,7 @@
 /*   By: imoulasr <imoulasr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 10:58:38 by imoulasr          #+#    #+#             */
-/*   Updated: 2025/02/26 12:20:12 by imoulasr         ###   ########.fr       */
+/*   Updated: 2025/02/26 18:39:49 by imoulasr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,3 +133,4 @@ int	is_empty_line(const char *line);
 int	check_valid_map(t_map *map);
 int	key_press(int keycode, t_config *config);
 int	key_release(int keycode, t_config *config);
+void	render(t_config *config);

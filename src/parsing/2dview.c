@@ -6,17 +6,48 @@
 /*   By: imoulasr <imoulasr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:32:57 by imoulasr          #+#    #+#             */
-/*   Updated: 2025/02/26 18:29:33 by imoulasr         ###   ########.fr       */
+/*   Updated: 2025/02/26 18:47:54 by imoulasr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void render_3d_view(t_config *config)
+{
+	int x;
+	int y;
+	int color;
+	int r;
+	int g;
+	int b;
+
+	/* Assume the 3D view uses the same dimensions as the 2D scene */
+	y = 0;
+	while (y < HEIGHT)
+	{
+		x = 0;
+		while (x < WIDTH)
+		{
+			/* Create a simple gradient */
+			r = (x * 255) / WIDTH;
+			g = (y * 255) / HEIGHT;
+			b = 128;
+			color = (r << 16) | (g << 8) | b;
+			my_bg_pixel_put(config, x, y, color);
+			x++;
+		}
+		y++;
+	}
+	mlx_put_image_to_window(config->graphics->mlx, config->graphics->win,
+		config->graphics->bg_img, 0, 0);
+}
 
 void	redraw_scene(t_config *config)
 {
 	mlx_clear_window(config->graphics->mlx, config->graphics->win);
 	mlx_put_image_to_window(config->graphics->mlx,
 		config->graphics->win, config->graphics->bg_img, 0, 0);
+	render_3d_view(config);
 	draw_enemies_radar(config);
 	draw_player(config);
 	draw_enemies(config);
@@ -208,6 +239,15 @@ int	key_release(int keycode, t_config *config)
 
 void	minimap(t_config *config)
 {
+	/* Render your 2D scene into the background image */
+	setup_image(config);
+	draw_map_background(config);
+	mlx_put_image_to_window(config->graphics->mlx,
+		config->graphics->win, config->graphics->bg_img, 0, 0);
+}
+
+void	render(t_config *config)
+{
 	config->graphics->mlx = mlx_init();
 	if (!config->graphics->mlx)
 		print_error("MLX init failed");
@@ -215,10 +255,8 @@ void	minimap(t_config *config)
 			WIDTH, HEIGHT, "2D Map");
 	if (!config->graphics->win)
 		print_error("MLX window creation failed");
-	setup_image(config);
-	draw_map_background(config);
-	mlx_put_image_to_window(config->graphics->mlx,
-		config->graphics->win, config->graphics->bg_img, 0, 0);
+	/* Draw the minimap (2D view) once initially */
+	minimap(config);
 	mlx_hook(config->graphics->win, 2, 1L << 0, key_press, config);
 	mlx_hook(config->graphics->win, 3, 1L << 1, key_release, config);
 	mlx_loop_hook(config->graphics->mlx, update_player, config);
