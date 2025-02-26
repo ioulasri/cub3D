@@ -6,7 +6,7 @@
 /*   By: imoulasr <imoulasr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:32:57 by imoulasr          #+#    #+#             */
-/*   Updated: 2025/02/26 15:03:17 by imoulasr         ###   ########.fr       */
+/*   Updated: 2025/02/26 18:29:33 by imoulasr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,14 +206,13 @@ int	key_release(int keycode, t_config *config)
 	return (0);
 }
 
-void	start_2d_view(t_config *config)
+void	minimap(t_config *config)
 {
 	config->graphics->mlx = mlx_init();
 	if (!config->graphics->mlx)
 		print_error("MLX init failed");
 	config->graphics->win = mlx_new_window(config->graphics->mlx,
-			config->map->width * CELL_SIZE,
-			config->map->height * CELL_SIZE, "2D Map");
+			WIDTH, HEIGHT, "2D Map");
 	if (!config->graphics->win)
 		print_error("MLX window creation failed");
 	setup_image(config);
