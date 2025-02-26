@@ -6,7 +6,7 @@
 /*   By: imoulasr <imoulasr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 11:23:20 by imoulasr          #+#    #+#             */
-/*   Updated: 2025/02/26 15:16:32 by imoulasr         ###   ########.fr       */
+/*   Updated: 2025/02/26 16:09:43 by imoulasr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -298,9 +298,6 @@ void	setup_enemies_random(t_config *config)
 	if (num < MIN_ENEMIES)
 		num = MIN_ENEMIES;
 	config->game->num_enemies = num;
-	config->game->enemies = malloc(sizeof(t_enemy) * num);
-	if (!config->game->enemies)
-		exit_with_error("Failed to allocate enemy array");
 	i = 0;
 	while (i < num)
 	{
