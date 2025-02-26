@@ -6,7 +6,7 @@
 /*   By: imoulasr <imoulasr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 11:24:34 by imoulasr          #+#    #+#             */
-/*   Updated: 2025/02/25 16:08:43 by imoulasr         ###   ########.fr       */
+/*   Updated: 2025/02/26 15:16:58 by imoulasr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,22 @@
 
 # define MAP_LIMIT 2064
 # define INITIAL_CAPACITY 100
-# define CELL_SIZE 20
-# define ESC_KEY 65307
 
+# define CELL_SIZE 20
+# define ESCKEY 65307
+# define FOLLOW_THRESHOLD 100
+# define ENEMY_CHASE_SPEED 0.003
+# define ENEMY_DAMAGE 1
+# define DAMAGE_THRESHOLD 15
+# define PLAYER_HEALTH 200000.0
+# define STARTING_HEALTH 200000.0
+# define HEALTH_DAYS_RATIO 2000
+# define STARTING_DAYS STARTING_HEALTH / HEALTH_DAYS_RATIO
+# define RADAR_COLOR 0xe40000
+# define RADAR_ALPHA 0.3
+# define RADAR_RADIUS DAMAGE_THRESHOLD
+# define MIN_ENEMIES 3
+# define ENEMY_FACTOR 50  /* one enemy per 20 free cells */
 /* 1- parsing */
 
 t_map_file *read_map(const char *path);
@@ -39,3 +52,13 @@ int open_file(const char *path);
 char **allocate_map_array(int capacity);
 char **resize_map_array(char **arr, int *capacity, int size);
 int read_lines(int fd, t_map_file *file);
+void	start_2d_view(t_config *config);
+void	draw_player(t_config *config);
+void	draw_map_background(t_config *config);
+void	draw_cell_bg(t_config *config, int col, int row, int color);
+void	my_bg_pixel_put(t_config *config, int x, int y, int color);
+void	setup_image(t_config *config);
+void update_enemies(t_config *config);
+void	draw_enemies(t_config *config);
+int	collision(t_config *config, double x, double y);
+void	draw_enemies_radar(t_config *config);

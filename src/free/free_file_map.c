@@ -6,7 +6,7 @@
 /*   By: imoulasr <imoulasr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 20:00:07 by imoulasr          #+#    #+#             */
-/*   Updated: 2025/02/24 20:02:57 by imoulasr         ###   ########.fr       */
+/*   Updated: 2025/02/26 11:02:05 by imoulasr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,5 @@ void free_map_file(t_map_file *file)
         free(file->arr);
     }
     free(file);
+    printf("HELLO\n\n\n");
 }

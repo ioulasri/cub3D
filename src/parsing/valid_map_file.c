@@ -6,7 +6,7 @@
 /*   By: imoulasr <imoulasr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 09:41:34 by imoulasr          #+#    #+#             */
-/*   Updated: 2025/02/25 14:15:57 by imoulasr         ###   ########.fr       */
+/*   Updated: 2025/02/26 11:05:07 by imoulasr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,11 +211,9 @@ void    print_combined_error(char *str1, int number)
 
 int	wrong_order(t_map_file *file)
 {
-	int		i;
-	t_phase	phase;
+	int	i = 0;
+	int	map_started = 0;
 
-	i = 0;
-	phase = PHASE_TEXTURES;
 	while (file->arr[i])
 	{
 		if (is_empty_line(file->arr[i]))
@@ -223,52 +221,41 @@ int	wrong_order(t_map_file *file)
 			i++;
 			continue ;
 		}
-		if (is_texture_line(file->arr[i]))
-		{
-			if (phase != PHASE_TEXTURES)
-				return (1);
-		}
-		else if (is_color_line(file->arr[i]))
-		{
-			if (phase == PHASE_MAP)
-				return (1);
-			phase = PHASE_COLORS;
-		}
-		else if (is_map_line(file->arr[i]))
-		{
-			phase = PHASE_MAP;
-		}
-		else
+		if (is_map_line(file->arr[i]))
+			map_started = 1;
+		else if (map_started)
 			return (1);
 		i++;
 	}
 	return (0);
 }
 
-void valid_map_file(t_map_file *file)
+
+int valid_map_file(t_map_file *file)
 {
     int index;
     
     if (!file)
     {
         print_error("cannot open map file");
-        exit(EXIT_FAILURE);
+        return (1);
     }
     if (check_duplicates(file))
     {
-        free_map_file(file);
-        exit(EXIT_FAILURE);
+		free_map_file(file);
+        return (1);
     }
     if (invalid_line(file, &index))
     {
-        free_map_file(file);
         print_combined_error("Error: Invalid line at: ", index);
-        exit(EXIT_FAILURE);
+		free_map_file(file);
+        return (1);
     }
     if (wrong_order(file))
     {
         print_error("Error: wrong order");
-        free_map_file(file);
-        exit(EXIT_FAILURE);
+		free_map_file(file);
+        return (1);
     }
+	return (0);
 }

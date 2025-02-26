@@ -6,7 +6,7 @@
 /*   By: imoulasr <imoulasr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:55:21 by imoulasr          #+#    #+#             */
-/*   Updated: 2025/02/25 14:38:33 by imoulasr         ###   ########.fr       */
+/*   Updated: 2025/02/26 01:40:45 by imoulasr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,30 @@ void	replace_spaces(t_map *map)
 {
 	int	i;
 	int	j;
+	int	len;
 
 	i = 0;
 	while (i < map->height)
 	{
+		len = strlen(map->grid[i]);
 		j = 0;
 		while (map->grid[i][j])
 		{
 			if (map->grid[i][j] == ' ')
-				map->grid[i][j] = '0';
-            if (map->grid[i][j] == '\n')
+			{
+				if (i == 0 || i == map->height - 1 || j == 0 || j == len - 1)
+					map->grid[i][j] = '1';
+				else
+					map->grid[i][j] = '0';
+			}
+			if (map->grid[i][j] == '\n')
 				map->grid[i][j] = '\0';
 			j++;
 		}
 		i++;
 	}
 }
+
 
 int	check_borders(t_map *map)
 {
@@ -77,8 +85,8 @@ void	print_map_attributes(const t_map *map)
 	printf("Map attributes:\n");
 	printf("  Height: %d\n", map->height);
 	printf("  Width: %d\n", map->width);
-	printf("  Start X: %d\n", map->start_x);
-	printf("  Start Y: %d\n", map->start_y);
+	printf("  Start X: %lf\n", map->start_x);
+	printf("  Start Y: %lf\n", map->start_y);
 	printf("  Start Direction: %c\n", map->start_dir);
 }
 
@@ -135,9 +143,9 @@ void    create_game_map(t_map_file *file, t_config *config)
 {
     (void)file;
     if (update_x_y_start(config->map))
-        exit_with_error_cleanup("", file, config);
+        exit_with_error_cleanup("", config);
     print_map_attributes(config->map);
     if (!check_valid_map(config->map))
-        exit_with_error_cleanup("", file, config);
+        exit_with_error_cleanup("", config);
     print_map(config->map);
 }
