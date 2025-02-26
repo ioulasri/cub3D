@@ -6,7 +6,7 @@
 /*   By: imoulasr <imoulasr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 11:24:34 by imoulasr          #+#    #+#             */
-/*   Updated: 2025/02/26 18:48:48 by imoulasr         ###   ########.fr       */
+/*   Updated: 2025/02/26 19:48:32 by imoulasr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,4 @@ void	setup_image(t_config *config);
 void update_enemies(t_config *config);
 void	draw_enemies(t_config *config);
 int	collision(t_config *config, double x, double y);
-void	draw_enemies_radar(t_config *config);
+void	draw_enemies_radar(t_config *config); 
