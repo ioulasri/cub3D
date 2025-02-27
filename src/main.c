@@ -6,7 +6,7 @@
 /*   By: imoulasr <imoulasr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 13:17:49 by imoulasr          #+#    #+#             */
-/*   Updated: 2025/02/26 10:51:27 by imoulasr         ###   ########.fr       */
+/*   Updated: 2025/02/27 18:55:34 by imoulasr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	main(int ac, char **av)
 	print_arr(file->arr);
 	config = game_config(file);
 	create_game_map(file, config);
-	start_2d_view(config);
+	start_game(config);
 	clean_and_exit(config);
 	return (0);
 }

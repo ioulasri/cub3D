@@ -6,7 +6,7 @@
 /*   By: imoulasr <imoulasr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 11:23:20 by imoulasr          #+#    #+#             */
-/*   Updated: 2025/02/26 15:16:32 by imoulasr         ###   ########.fr       */
+/*   Updated: 2025/02/27 17:44:01 by imoulasr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,11 +100,19 @@ void	init_keys(t_keys *keys)
 
 void	init_graphics(t_graphics *graphics)
 {
-	graphics->img = NULL;
-	graphics->bg_img = NULL;
-	graphics->win = NULL;
 	graphics->mlx = NULL;
+	graphics->win = NULL;
+	graphics->img = NULL;
+	graphics->img_3d = NULL;
+	graphics->img_3d_data = NULL;
+	graphics->img_data = NULL;
+	graphics->bg_img = NULL;
+	graphics->bg_img_data = NULL;
+	graphics->bpp = 0;
+	graphics->line_length = 0;
+	graphics->endian = 0;
 }
+
 
 void	init_enemies(t_game *game)
 {
@@ -132,10 +140,6 @@ t_game	*init_game(t_config *config)
 	if (!game)
 		exit_with_error("Failed to allocate game");
 	init_keys(&game->keys);
-	game->num_enemies = 3;
-	game->enemies = malloc(sizeof(t_enemy) * game->num_enemies);
-	if (!game->enemies)
-		exit_with_error("Failed to allocate enemies");
 	game->player = malloc(sizeof(t_player));
 	if (!game->player)
 		exit_with_error_cleanup("Error: Failed to allocate player", config);

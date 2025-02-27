@@ -6,7 +6,7 @@
 /*   By: imoulasr <imoulasr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 11:24:34 by imoulasr          #+#    #+#             */
-/*   Updated: 2025/02/26 15:16:58 by imoulasr         ###   ########.fr       */
+/*   Updated: 2025/02/27 17:00:51 by imoulasr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,12 @@
 # define MAP_LIMIT 2064
 # define INITIAL_CAPACITY 100
 
-# define CELL_SIZE 20
+# define CELL_SIZE 12
+# define HEIGHT 720
+# define WIDTH 1080
 # define ESCKEY 65307
 # define FOLLOW_THRESHOLD 100
-# define ENEMY_CHASE_SPEED 0.003
+# define ENEMY_CHASE_SPEED 0.005
 # define ENEMY_DAMAGE 1
 # define DAMAGE_THRESHOLD 15
 # define PLAYER_HEALTH 200000.0
@@ -52,7 +54,7 @@ int open_file(const char *path);
 char **allocate_map_array(int capacity);
 char **resize_map_array(char **arr, int *capacity, int size);
 int read_lines(int fd, t_map_file *file);
-void	start_2d_view(t_config *config);
+void	start_game(t_config *config);
 void	draw_player(t_config *config);
 void	draw_map_background(t_config *config);
 void	draw_cell_bg(t_config *config, int col, int row, int color);

@@ -6,7 +6,7 @@
 /*   By: imoulasr <imoulasr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 10:58:38 by imoulasr          #+#    #+#             */
-/*   Updated: 2025/02/26 12:20:12 by imoulasr         ###   ########.fr       */
+/*   Updated: 2025/02/27 18:46:20 by imoulasr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ typedef struct s_graphics
 	void	*mlx;
 	void	*win;
 	void	*img;
+	void	*img_3d;
+	char	*img_3d_data;
 	char	*img_data;
 	void	*bg_img;
 	char	*bg_img_data;
@@ -133,3 +135,6 @@ int	is_empty_line(const char *line);
 int	check_valid_map(t_map *map);
 int	key_press(int keycode, t_config *config);
 int	key_release(int keycode, t_config *config);
+void    render_3d(t_config *config);
+void	start_game(t_config *config);
+void	draw_minimap_viewport(t_config *config);

@@ -6,7 +6,7 @@
 /*   By: imoulasr <imoulasr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:32:57 by imoulasr          #+#    #+#             */
-/*   Updated: 2025/02/26 15:03:17 by imoulasr         ###   ########.fr       */
+/*   Updated: 2025/02/27 18:56:27 by imoulasr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 void	redraw_scene(t_config *config)
 {
 	mlx_clear_window(config->graphics->mlx, config->graphics->win);
-	mlx_put_image_to_window(config->graphics->mlx,
-		config->graphics->win, config->graphics->bg_img, 0, 0);
+	// mlx_put_image_to_window(config->graphics->mlx,
+	// 	config->graphics->win, config->graphics->bg_img, 0, 0);
+	//draw_minimap_viewport(config);
+	//render_3d(config);
 	draw_enemies_radar(config);
 	draw_player(config);
 	draw_enemies(config);
@@ -100,37 +102,49 @@ void draw_hud(t_config *config)
 }
 
 
-void	draw_death_message(t_config *config)
+void draw_death_message(t_config *config)
 {
-	int	win_width;
-	int	win_height;
-	int	text_width;
-	int	text_height;
+    int win_width = WIDTH;
+    int win_height = HEIGHT;
+    int img_width;
+    int img_height;
+    void *img;
 
-	win_width = config->map->width * CELL_SIZE;
-	text_width = 250;
-	text_height = 20;
-	win_height = config->map->height * CELL_SIZE;
-	mlx_clear_window(config->graphics->mlx, config->graphics->win);
-	mlx_string_put(config->graphics->mlx, config->graphics->win,
-		(win_width - text_width) / 2,
-		(win_height - text_height) / 2,
-		0xFF0000, "YOU HAVE BEEN ABSORBED BY THE BLACKHOLE");
+    // Clear the window first.
+    mlx_clear_window(config->graphics->mlx, config->graphics->win);
+
+    // Load the XPM file. Make sure the file path is correct.
+    img = mlx_xpm_file_to_image(config->graphics->mlx,
+                                "textures/dead.xpm",
+                                &img_width,
+                                &img_height);
+    if (!img)
+    {
+        // If the image fails to load, you can fallback to showing a text message.
+        mlx_string_put(config->graphics->mlx, config->graphics->win,
+                       (win_width - 200) / 2,
+                       (win_height - 20) / 2,
+                       0xFF0000, "YOU HAVE BEEN ABSORBED BY THE BLACKHOLE");
+        return;
+    }
+
+    // Display the image centered in the window.
+    mlx_put_image_to_window(config->graphics->mlx,
+                            config->graphics->win,
+                            img,
+                            (win_width - img_width) / 2,
+                            (win_height - img_height) / 2);
+	mlx_destroy_image(config->graphics->mlx, img);
 }
 
-
-int	update_player(void *param)
+int	update_player(t_config *config)
 {
-	t_config	*config;
 	double		speed;
 	double		old_x;
 	double		old_y;
 	double		new_x;
 	double		new_y;
 
-	config = (t_config *)param;
-	update_enemies(config);
-	draw_enemies_radar(config);
 	speed = 0.01;
 	old_x = config->game->player->x;
 	old_y = config->game->player->y;
@@ -172,11 +186,20 @@ int	update_player(void *param)
 		draw_death_message(config);
 		return (0);  /* Freeze: do not update movement */
 	}
+	return (0);
+}
+
+int	update_scene(void *param)
+{
+	t_config	*config;
+
+	config = (t_config *)param;
+	update_player(config);
+	update_enemies(config);
 	redraw_scene(config);
 	draw_hud(config);
 	return (0);
 }
-
 
 int	key_press(int keycode, t_config *config)
 {
@@ -206,22 +229,28 @@ int	key_release(int keycode, t_config *config)
 	return (0);
 }
 
-void	start_2d_view(t_config *config)
+void	minimap(t_config *config)
+{
+	setup_image(config);
+	draw_map_background(config);	
+}
+
+void	start_game(t_config *config)
 {
 	config->graphics->mlx = mlx_init();
 	if (!config->graphics->mlx)
 		print_error("MLX init failed");
 	config->graphics->win = mlx_new_window(config->graphics->mlx,
-			config->map->width * CELL_SIZE,
-			config->map->height * CELL_SIZE, "2D Map");
+			WIDTH,
+			HEIGHT, "2D Map");
 	if (!config->graphics->win)
 		print_error("MLX window creation failed");
-	setup_image(config);
-	draw_map_background(config);
+	//render_3d(config);
+	minimap(config);
 	mlx_put_image_to_window(config->graphics->mlx,
 		config->graphics->win, config->graphics->bg_img, 0, 0);
 	mlx_hook(config->graphics->win, 2, 1L << 0, key_press, config);
 	mlx_hook(config->graphics->win, 3, 1L << 1, key_release, config);
-	mlx_loop_hook(config->graphics->mlx, update_player, config);
+	mlx_loop_hook(config->graphics->mlx, update_scene, config);
 	mlx_loop(config->graphics->mlx);
 }
